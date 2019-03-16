@@ -3,6 +3,7 @@
 #include "layers.hpp"
 
 using std::vector;
+using namespace std;
 
 class Sequential {
     public:
@@ -14,4 +15,4 @@ class Sequential {
         void Fit();
 
         void predict();
-}
+};

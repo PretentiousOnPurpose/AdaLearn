@@ -2,14 +2,15 @@
 #include <string>
 
 using std::vector;
+using namespace std;
+
 
 class Layer {
     public:
         string act_fn;
-        vector<float> weights;
-        int inDim[2];
-        int outDim[2];
+        vector<vector<float>> weights;
+        int units;
 
         Layer(int units, string act_fn);
-        initWeight(int input_dims);
+        void initWeight(int input_dims);
 };
