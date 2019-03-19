@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
+#include <cmath>
 #include <random>
 #include "layers.hpp"
 
@@ -13,7 +13,7 @@ Layer::Layer(int units, string act_fn) {
     this->act_fn = act_fn;
 }
 
-void Layer::initWeight(int input_dims) {
+void Layer::initWeights(int input_dims) {
     for (int i = 0; i < this->units; i++) {
         vector<float> tmp;
         for (int i = 0; i < input_dims; i++) {

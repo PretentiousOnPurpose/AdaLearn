@@ -11,9 +11,9 @@ void Sequential::Add(int units, string act_fn, int input_dims) {
     auto L = Layer(units, act_fn);
     if (input_dims) {
         Sequential::dims.push_back(input_dims);
-        L.initWeight(input_dims);
+        L.initWeights(input_dims);
     } else {
-        L.initWeight(Sequential::dims.back());
+        L.initWeights(Sequential::dims.back());
     }
     Sequential::dims.push_back(units);
     Sequential::layers.push_back(L);

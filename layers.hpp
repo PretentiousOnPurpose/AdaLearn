@@ -12,5 +12,5 @@ class Layer {
         int units;
 
         Layer(int units, string act_fn);
-        void initWeight(int input_dims);
+        void initWeights(int input_dims);
 };
