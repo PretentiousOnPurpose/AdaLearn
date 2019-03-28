@@ -17,4 +17,6 @@ class Layer {
         vector<float> relu(vector<float>);
         vector<float> sigmoid(vector<float>);
         void initWeights(int input_dims);
+
+        void backProp_L();
 };

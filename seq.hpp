@@ -14,7 +14,7 @@ class Sequential {
         void Add(int units, string act_fn, int input_dims = 0);
         void Run(vector<float>);
 
-        void Fit();
-
-        void predict();
+        void Fit(vector<float>, vector<float>, int);
+        void backProp();
+        void predict(vector<float>);
 };
