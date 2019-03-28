@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+using namespace std;
 using std::vector;
 
 class DataIterator {
@@ -19,7 +20,13 @@ class DataIterator {
         vector<vector<float>> tX;    
         vector<vector<float>> tY;
 
+        vector<float> strSplit(char * , string);
+
         void readData(string, string);
         void transformData();
         vector<float> inverseTransform(vector<float>);
+
+        DataIterator(int n_feat) {
+            this->n_feat = n_feat;
+        }
 };
