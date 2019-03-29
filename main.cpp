@@ -9,6 +9,9 @@ int main() {
 
     Sequential model;
     model.Add(10, "relu", 5);
+    model.Add(25, "relu");
+    model.Add(50, "relu");
+    model.Add(30, "relu");
     model.Add(15, "relu");
     model.Add(5, "relu");
     model.Add(1, "relu");
@@ -17,8 +20,6 @@ int main() {
 
     d.readData("data.csv", "y.csv");
     d.transformData();
-
-    cout << d.meanY << endl;
 
     return 0;
 }

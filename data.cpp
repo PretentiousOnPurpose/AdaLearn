@@ -2,6 +2,7 @@
 #include <cmath>
 #include <iostream>
 #include <fstream>
+#include <cstdlib>
 #include <vector>
 #include "data.hpp"
 
@@ -11,7 +12,7 @@ using std::vector;
 vector<float> DataIterator::strSplit(char * x, string delim) {
     vector<float> y;
     char * token = strtok(x,",");
-    
+
     while (token != NULL) {
         y.push_back(stof(token));
         token = strtok(NULL, ",");
@@ -43,7 +44,7 @@ void DataIterator::readData(string x_data_filename, string y_data_filename) {
 }
 
 void DataIterator::transformData() {
-    
+
     // For X_DATA
     // Calculating Mean
     for (int i = 0; i < this->n_feat; i++) {
@@ -102,5 +103,27 @@ void DataIterator::transformData() {
     for (int i = 0; i < this->rY.size(); i++) {
         this->tY.push_back((this->rY[i][0] - this->meanY) / this->stdY);
     }
+}
 
+vector<float> DataIterator::inverseTransformX(vector<float> x) {
+    vector<float> y;
+    if (x.size() == this->n_feat) {
+        for (int i = 0; i < n_feat; i++) {
+            y.push_back(x[i] * this->stdX[i] + this->meanX[i]);
+        }
+    } else {
+        cout << "No Sufficient Input Features" << endl;
+        exit(0);
+    }
+
+    return y;
+}
+
+vector<float> DataIterator::inverseTransformY(vector<float> x) {
+    vector<float> y;
+    for (int i = 0; i < n_feat; i++) {
+        y.push_back(y[i] * this->stdY + this->meanY);
+    }
+
+    return y;
 }
