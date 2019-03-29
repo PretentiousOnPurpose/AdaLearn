@@ -4,13 +4,15 @@
 #include <cmath>
 #include <random>
 #include "layers.hpp"
+#include "utils.hpp"
 
 using std::vector;
 using namespace std;
 
-Layer::Layer(int units, string act_fn) {
+Layer::Layer(int units, string act_fn, string type) {
     this->units = units;
     this->act_fn = act_fn;
+    this->type = type;
 }
 
 void Layer::initWeights(int input_dims) {
@@ -24,16 +26,8 @@ void Layer::initWeights(int input_dims) {
 }
 
 void Layer::activation(vector<float> x) {
-    vector<float> y;
-    float tmp;
-
-    for (int i = 0; i < this->weights.size(); i++) {
-        tmp = 0;
-        for (int j = 0; j < this->weights[0].size(); j++) {
-            tmp += x[j] * this->weights[i][j];
-        }
-        y.push_back(tmp);
-    }
+    
+    vector<float> y = utils::matMul(this->weights, x);
 
     if (this->act_fn == "relu") {
         y = relu(y);
@@ -65,4 +59,10 @@ vector<float> Layer::sigmoid(vector<float> x) {
         y.push_back(1 / (1 + exp(-i)));
     }
     return y;
+}
+
+void Layer::backProp_L(vector<float> y = vector<float>{}) {
+    if (this->type == "output") {
+
+    }
 }
