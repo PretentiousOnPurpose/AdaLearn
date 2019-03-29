@@ -7,18 +7,16 @@ class DataIterator {
     public:
         int n_feat;
         
-        vector<float> minX;
-        vector<float> maxX;
+        vector<float> meanX;
         vector<float> stdX;
 
-        float minY;
-        float maxY;
+        float meanY;
         float stdY;
 
         vector<vector<float>> rX;    
         vector<vector<float>> rY;
         vector<vector<float>> tX;    
-        vector<vector<float>> tY;
+        vector<float> tY;
 
         vector<float> strSplit(char * , string);
 

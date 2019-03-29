@@ -16,5 +16,9 @@ int main() {
     DataIterator d = DataIterator(4);
 
     d.readData("data.csv", "y.csv");
+    d.transformData();
+
+    cout << d.meanY << endl;
+
     return 0;
 }

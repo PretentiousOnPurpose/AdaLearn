@@ -27,7 +27,7 @@ void Layer::initWeights(int input_dims) {
 
 void Layer::activation(vector<float> x) {
     
-    vector<float> y = utils::matMul(this->weights, x);
+    vector<float> y = matMul(this->weights, x);
 
     if (this->act_fn == "relu") {
         y = relu(y);

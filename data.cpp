@@ -1,5 +1,5 @@
 #include <string.h>
-#include <string>
+#include <cmath>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -14,7 +14,7 @@ vector<float> DataIterator::strSplit(char * x, string delim) {
     
     while (token != NULL) {
         y.push_back(stof(token));
-        token = strtok (NULL, ",");
+        token = strtok(NULL, ",");
     }
 
     return y;
@@ -38,6 +38,69 @@ void DataIterator::readData(string x_data_filename, string y_data_filename) {
             this->rY.push_back(this->strSplit(const_cast<char*>(line.c_str()), ","));
         }
         y_file.close();
+    }
+
+}
+
+void DataIterator::transformData() {
+    
+    // For X_DATA
+    // Calculating Mean
+    for (int i = 0; i < this->n_feat; i++) {
+        float mean = 0;
+        for (int j = 0; j < this->rX.size(); j++) {
+            mean += this->rX[j][i];
+        }
+
+        this->meanX.push_back(mean / this->rX.size());
+    }
+
+    // Calculating Std Deviation
+    for (int i = 0; i < this->n_feat; i++) {
+        float std = 0;
+        for (int j = 0; j < this->rX.size(); j++) {
+            std += (this->rX[j][i] - this->meanX[i]) * (this->rX[j][i] - this->meanX[i]);
+        }
+
+        std /= this->rX.size();
+        std = sqrt(std);
+
+        this->stdX.push_back(std);
+    }
+
+    // Transformation
+    for (int i = 0; i < this->rX.size(); i++) {
+        vector<float> tmp;
+        for (int j = 0; j < this->n_feat; j++) {
+            tmp.push_back((this->rX[i][j] - this->meanX[j]) / this->stdX[j]);
+        }
+
+        this->tX.push_back(tmp);
+    }
+
+
+    // For Y_DATA
+    // Calculating Mean
+    float mean = 0;
+    for (int i = 0; i < this->rY.size(); i++) {
+        mean += this->rY[i][0];
+    }
+    this->meanY = mean / this->rY.size();
+
+    // Calculating Std Deviation
+    float std = 0;
+    for (int i = 0; i < this->rX.size(); i++) {
+        std += (this->rY[i][0] - this->meanY) * (this->rY[i][0] - this->meanY);
+    }
+
+    std /= this->rY.size();
+    std = sqrt(std);
+
+    this->stdY = std;
+
+    // Transformation
+    for (int i = 0; i < this->rY.size(); i++) {
+        this->tY.push_back((this->rY[i][0] - this->meanY) / this->stdY);
     }
 
 }
