@@ -38,10 +38,16 @@ void Sequential::compile(float lr, string loss_fn) {
     this->loss_fn = loss_fn;
 }
 
-void Sequential::backProp(vector<float> x, vector<float> y) {
-    if (this->loss_fn == "mean_squared_error") {
-        
-    } else if (this->loss_fn == "binary_cross_entropy") {
+void Sequential::fit(vector<float> x, vector<float> y, int epochs) {
+    for (int e = 0; e < epochs; e++) {
+        this->run(x);
+        this->backProp(this->lr, this->loss_fn, y);
+    }
+}
 
+void Sequential::backProp(float lr, string loss_fn, vector<float> y) {
+    this->layers.back().backProp_L(lr, loss_fn, y);
+    for (int i = this->layers.size() - 2; i >= 0; i--) {
+        this->layers[i].backProp_L(lr, loss_fn, this->layers[i+1].dErr);
     }
 }

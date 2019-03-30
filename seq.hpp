@@ -9,7 +9,7 @@ class Sequential {
     public:
         vector<Layer> layers;
         vector<float> y_hat;
-
+        vector<int> dims;
         string loss_fn;
         float lr;
 
@@ -17,6 +17,5 @@ class Sequential {
         void run(vector<float>);
         void compile(float, string);
         void fit(vector<float>, vector<float>, int);
-        void backProp(vector<float>, vector<float>);
-        void predict(vector<float>);
+        void backProp(float, string, vector<float>);
 };

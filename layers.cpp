@@ -73,8 +73,17 @@ vector<float> Layer::actFnGrad(vector<float> x) {
     return y;
 }
 
-vector<float> Layer::lossFnGrad(vector<float> x) {
+vector<float> Layer::lossFnGrad(vector<float> x, string loss_fn) {
     vector<float> y;
+
+    if (loss_fn == "mean_squared_error") {
+        return sub(this->l_y_hat, x);
+    } else {
+        for (int i = 0; i < x.size(); i++) {
+            y.push_back((this->l_y_hat[i] - x[i])/(this->l_y_hat[i] * (1 - this->l_y_hat[i])));
+        }
+    }
+
     return y;
 }
 
@@ -87,19 +96,24 @@ vector<float> Layer::sigmoid(vector<float> x) {
     return y;
 }
 
-void Layer::backProp_L(float lr, vector<float> y = vector<float>{}) {
-    vector<float> tmp;
+void Layer::backProp_L(float lr, string loss_fn, vector<float> dErr_1) {
+    float tmp = 0;
 
     if (this->type == "output") {
-        tmp = vectElementMul(lossFnGrad(this->l_y_hat), actFnGrad(this->l_y_hat));
+        this->dErr = vectElementMul(lossFnGrad(dErr_1, loss_fn), actFnGrad(this->l_y_hat));
     } else {
-        
+        for (int i = 0; i < dErr_1.size(); i++) {
+            tmp += dErr_1[i];
+        }
+        this->dErr = vectElementMul(vector<float>(this->units, tmp), actFnGrad(this->l_y_hat));
     }
 
     for (int i = 0; i < this->units; i++) {
+        vector<float> tmp1;
         for (int j = 0; j < this->input.size(); j++) {
-            this->dW[i][j] = tmp[j] * this->input[j];
+            tmp1.push_back(this->dErr[j] * this->input[j]);
         }
+        this->dW.push_back(tmp1);
     }
 
     for (int i = 0; i < this->weights.size(); i++) {

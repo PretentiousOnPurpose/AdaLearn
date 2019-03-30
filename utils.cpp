@@ -56,7 +56,7 @@ vector<float> vectElementMul(vector<float> x1, vector<float> x2) {
 
     if (x1.size() == x2.size()) {
         for (int i = 0; i < x1.size(); i++) {
-            y.push_back(x1[i] * x2[i])
+            y.push_back(x1[i] * x2[i]);
         }
     }
 
