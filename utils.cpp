@@ -17,19 +17,19 @@ vector<float> squareDiff(vector<float> x, vector<float> y) {
     return z;
 }
 
-vector<float> Sub(vector<float> x, vector<float> y) {
+vector<float> sub(vector<float> x, vector<float> y, float scale) {
     vector<float> z;
 
     if (x.size() == y.size()) {
         for (int i = 0; i < x.size(); i++) {
-            z.push_back(x[i] - y[i]);
+            z.push_back(scale * (x[i] - y[i]));
         }
     }
 
     return z;
 }
 
-vector<float> Mul(vector<float> x, vector<float> y) {
+vector<float> mul(vector<float> x, vector<float> y) {
     vector<float> z;
 
     if (x.size() == y.size()) {
@@ -39,6 +39,28 @@ vector<float> Mul(vector<float> x, vector<float> y) {
     }
 
     return z;
+}
+
+float mean(vector<float> x, float scale) {
+    float mean = 0;
+    for (float i : x) {
+        mean += scale * i;
+    }
+
+    mean /= x.size();
+    return mean;
+}
+
+vector<float> vectElementMul(vector<float> x1, vector<float> x2) {
+    vector<float> y;
+
+    if (x1.size() == x2.size()) {
+        for (int i = 0; i < x1.size(); i++) {
+            y.push_back(x1[i] * x2[i])
+        }
+    }
+
+    return y;
 }
 
 vector<float> matMul(vector<vector<float>> w, vector<float> x) {

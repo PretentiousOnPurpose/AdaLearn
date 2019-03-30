@@ -8,9 +8,10 @@ using namespace std;
 class Layer {
     public:
         string act_fn;
-        vector<float> dW;
+        vector<vector<float>> dW;
         vector<vector<float>> weights;
         vector<float> l_y_hat;
+        vector<float> input;
         int units;
         string type;
 
