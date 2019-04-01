@@ -19,11 +19,9 @@ vector<float> squareDiff(vector<float> x, vector<float> y) {
 
 vector<float> sub(vector<float> x, vector<float> y, float scale) {
     vector<float> z;
-
-    if (x.size() == y.size()) {
-        for (int i = 0; i < x.size(); i++) {
+    
+    for (int i = 0; i < x.size(); i++) {
             z.push_back(scale * (x[i] - y[i]));
-        }
     }
 
     return z;
@@ -77,3 +75,20 @@ vector<float> matMul(vector<vector<float>> w, vector<float> x) {
 
     return y;
 }
+
+void printVect(vector<float> x) {
+    for (float i : x) {
+        cout << i << " ";
+    }
+    cout << endl;
+}
+
+void printVect(vector<vector<float>> x) {
+    for (vector<float> i : x) {
+        for (float j : i) {
+            cout << j << " ";
+        }
+        cout << endl;
+    }
+}
+

@@ -9,6 +9,7 @@
 using std::vector;
 using namespace std;
 
+
 Layer::Layer(int units, string act_fn, string type) {
     this->units = units;
     this->act_fn = act_fn;
@@ -78,7 +79,7 @@ vector<float> Layer::lossFnGrad(vector<float> x, string loss_fn) {
 
     if (loss_fn == "mean_squared_error") {
         return sub(this->l_y_hat, x);
-    } else {
+    } else if (loss_fn == "binary_cross_entropy") {
         for (int i = 0; i < x.size(); i++) {
             y.push_back((this->l_y_hat[i] - x[i])/(this->l_y_hat[i] * (1 - this->l_y_hat[i])));
         }

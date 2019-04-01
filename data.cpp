@@ -101,7 +101,7 @@ void DataIterator::transformData() {
 
     // Transformation
     for (int i = 0; i < this->rY.size(); i++) {
-        this->tY.push_back((this->rY[i][0] - this->meanY) / this->stdY);
+        this->tY.push_back(vector<float>{(this->rY[i][0] - this->meanY) / this->stdY});
     }
 }
 

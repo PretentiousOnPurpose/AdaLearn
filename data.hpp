@@ -16,7 +16,7 @@ class DataIterator {
         vector<vector<float>> rX;
         vector<vector<float>> rY;
         vector<vector<float>> tX;
-        vector<float> tY;
+        vector<vector<float>> tY;
 
         vector<float> strSplit(char * , string);
 
