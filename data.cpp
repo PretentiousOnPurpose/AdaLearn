@@ -29,7 +29,7 @@ void DataIterator::readData(string x_data_filename, string y_data_filename) {
 
     if (x_file.is_open()) {
         while (getline(x_file,line)) {
-            this->rX.push_back(this->strSplit(const_cast<char*>(line.c_str()), ","));
+            this->rX.push_back(this->strSplit(const_cast<char*>(line.c_str()), ",")); 
         }
         x_file.close();
     }

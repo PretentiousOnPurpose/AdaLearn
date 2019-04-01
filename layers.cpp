@@ -99,6 +99,8 @@ vector<float> Layer::sigmoid(vector<float> x) {
 
 void Layer::backProp_L(float lr, string loss_fn, vector<float> dErr_1) {
     float tmp = 0;
+    vector<float> tmp1;
+    vector<vector<float>> dW;
 
     if (this->type == "output") {
         this->dErr = vectElementMul(lossFnGrad(dErr_1, loss_fn), actFnGrad(this->l_y_hat));
@@ -106,20 +108,21 @@ void Layer::backProp_L(float lr, string loss_fn, vector<float> dErr_1) {
         for (int i = 0; i < dErr_1.size(); i++) {
             tmp += dErr_1[i];
         }
+
         this->dErr = vectElementMul(vector<float>(this->units, tmp), actFnGrad(this->l_y_hat));
     }
 
     for (int i = 0; i < this->units; i++) {
-        vector<float> tmp1;
+        tmp1.clear();
         for (int j = 0; j < this->input.size(); j++) {
             tmp1.push_back(this->dErr[j] * this->input[j]);
         }
-        this->dW.push_back(tmp1);
+        dW.push_back(tmp1);
     }
 
     for (int i = 0; i < this->weights.size(); i++) {
         for (int j = 0; j < this->weights[0].size(); j++) {
-            this->weights[i][j] -= lr * this->dW[i][j];
+            this->weights[i][j] -= lr * dW[i][j];
         }
     }
 }
