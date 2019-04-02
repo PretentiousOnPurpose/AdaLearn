@@ -97,25 +97,30 @@ vector<float> Layer::sigmoid(vector<float> x) {
     return y;
 }
 
-void Layer::backProp_L(float lr, string loss_fn, vector<float> dErr_1) {
+void Layer::backProp_L(float lr, string loss_fn, vector<float> dErr_1, vector<vector<float>> w) {
     float tmp = 0;
     vector<float> tmp1;
     vector<vector<float>> dW;
 
-    if (this->type == "output") {
+    if (this->type == "input") {
         this->dErr = vectElementMul(lossFnGrad(dErr_1, loss_fn), actFnGrad(this->l_y_hat));
     } else {
-        for (int i = 0; i < dErr_1.size(); i++) {
-            tmp += dErr_1[i];
+        tmp1.clear();
+        for (int i = 0; i < this->units; i++) {
+            tmp = 0;
+            for (int j = 0; j < dErr_1.size(); j++) {
+                tmp += dErr_1[j] * w[j][i];
+            }
+            tmp1.push_back(tmp);
         }
 
-        this->dErr = vectElementMul(vector<float>(this->units, tmp), actFnGrad(this->l_y_hat));
+        this->dErr = vectElementMul(tmp1, actFnGrad(this->l_y_hat));
     }
 
     for (int i = 0; i < this->units; i++) {
         tmp1.clear();
         for (int j = 0; j < this->input.size(); j++) {
-            tmp1.push_back(this->dErr[j] * this->input[j]);
+            tmp1.push_back(this->dErr[i] * this->input[j]);
         }
         dW.push_back(tmp1);
     }

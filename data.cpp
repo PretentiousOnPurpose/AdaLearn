@@ -44,6 +44,78 @@ void DataIterator::readData(string x_data_filename, string y_data_filename) {
 }
 
 void DataIterator::transformData() {
+    if (this->type == "min_max_scaler") {
+        this->minMaxScaler();
+    } else if (this->type == "standard_scaler") {
+        this->standardScaler();
+    }
+}
+
+void DataIterator::minMaxScaler() {
+
+    // For X_DATA
+    // Calculating Min
+    for (int i = 0; i < this->n_feat; i++) {
+        float min = 0;
+        for (int j = 0; j < this->rX.size(); j++) {
+            if (min > this->rX[j][i]) {
+                min =  this->rX[j][i];
+            }
+        }
+
+        this->minX.push_back(min);
+    }
+
+    // Calculating Max
+    for (int i = 0; i < this->n_feat; i++) {
+        float max = this->rX[i][0];
+        for (int j = 0; j < this->rX.size(); j++) {
+            if (max < this->rX[j][i]) {
+                max = this->rX[j][i];
+            }
+        }
+
+        this->maxX.push_back(max);
+    }
+
+    // Transformation
+    for (int i = 0; i < this->rX.size(); i++) {
+        vector<float> tmp;
+        for (int j = 0; j < this->n_feat; j++) {
+            tmp.push_back((this->rX[i][j] - this->minX[j]) / (this->maxX[j] - this->minX[j]));
+        }
+
+        this->tX.push_back(tmp);
+    }
+
+
+    // For Y_DATA
+    // Calculating Min
+    float min = 0;
+    for (int i = 0; i < this->rY.size(); i++) {
+        if (min > this->rY[i][0]) {
+            min = this->rY[i][0];
+        }
+    }
+    this->minY = min;
+
+    // Calculating Max
+    float max = this->rY[0][0];
+    for (int i = 0; i < this->rY.size(); i++) {
+        if (max < this->rY[i][0]) {
+            max = this->rY[i][0];
+        }
+    }
+
+    this->maxY = max;
+
+    // Transformation
+    for (int i = 0; i < this->rY.size(); i++) {
+        this->tY.push_back(vector<float>{(this->rY[i][0] - this->minY) / (this->maxY - this->minY)});
+    }
+}
+
+void DataIterator::standardScaler() {
 
     // For X_DATA
     // Calculating Mean
@@ -90,7 +162,7 @@ void DataIterator::transformData() {
 
     // Calculating Std Deviation
     float std = 0;
-    for (int i = 0; i < this->rX.size(); i++) {
+    for (int i = 0; i < this->rY.size(); i++) {
         std += (this->rY[i][0] - this->meanY) * (this->rY[i][0] - this->meanY);
     }
 

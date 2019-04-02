@@ -22,5 +22,5 @@ class Layer {
         void initWeights(int input_dims);
         vector<float> actFnGrad(vector<float>);
         vector<float> lossFnGrad(vector<float>, string);
-        void backProp_L(float, string, vector<float>);
+        void backProp_L(float, string, vector<float>, vector<vector<float>>);
 };
