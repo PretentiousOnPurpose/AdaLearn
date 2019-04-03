@@ -41,8 +41,9 @@ void Sequential::compile(float lr, string loss_fn) {
 void Sequential::fit(vector<vector<float>> x, vector<vector<float>> y, int epochs) {
     for (int e = 0; e < epochs; e++) {
         float loss = 0;
-        for(int i = 0; i < x.size(); i++) {
+        for(int i = 0; i < 1; i++) {
             this->run(x[i]);
+            
             loss += this->getLoss(y[i]);
             this->backProp(this->lr, this->loss_fn, y[i]);
         }

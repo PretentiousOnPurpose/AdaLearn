@@ -20,7 +20,7 @@ void Layer::initWeights(int input_dims) {
     for (int i = 0; i < this->units; i++) {
         vector<float> tmp;
         for (int i = 0; i < input_dims; i++) {
-            tmp.push_back(rand() / double(RAND_MAX));
+            tmp.push_back(rand() / double(RAND_MAX));    
         }
         this->weights.push_back(tmp);
     }
@@ -102,28 +102,13 @@ void Layer::backProp_L(float lr, string loss_fn, vector<float> dErr_1, vector<ve
     vector<float> tmp1;
     vector<vector<float>> dW;
 
-    if (this->type == "input") {
+    if (this->type == "output" || (this->type == "input" && w.empty())) {
         this->dErr = vectElementMul(lossFnGrad(dErr_1, loss_fn), actFnGrad(this->l_y_hat));
     } else {
-        tmp1.clear();
-        for (int i = 0; i < this->units; i++) {
-            tmp = 0;
-            for (int j = 0; j < dErr_1.size(); j++) {
-                tmp += dErr_1[j] * w[j][i];
-            }
-            tmp1.push_back(tmp);
-        }
-
-        this->dErr = vectElementMul(tmp1, actFnGrad(this->l_y_hat));
+        this->dErr = vectElementMul(matMul(transpose(w), dErr_1), actFnGrad(this->l_y_hat));
     }
 
-    for (int i = 0; i < this->units; i++) {
-        tmp1.clear();
-        for (int j = 0; j < this->input.size(); j++) {
-            tmp1.push_back(this->dErr[i] * this->input[j]);
-        }
-        dW.push_back(tmp1);
-    }
+    dW = gradMatMul(this->dErr, this->input);
 
     for (int i = 0; i < this->weights.size(); i++) {
         for (int j = 0; j < this->weights[0].size(); j++) {

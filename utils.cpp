@@ -76,6 +76,33 @@ vector<float> matMul(vector<vector<float>> w, vector<float> x) {
     return y;
 }
 
+vector<vector<float>> gradMatMul(vector<float> x1, vector<float> x2) {
+    vector<vector<float>> y;
+    for (int i = 0; i < x1.size(); i++) {
+        vector<float> tmp;
+        for (int j = 0; j < x2.size(); j++) {
+            tmp.push_back(x1[i] * x2[j]);
+        }
+        y.push_back(tmp);
+    }
+
+    return y;
+}
+
+vector<vector<float>> transpose(vector<vector<float>> w) {
+    vector<vector<float>> y;
+    for (int i = 0; i < w[0].size(); i++) {
+        vector<float> tmp;
+        for (int j = 0; j < w.size(); j++) {
+            tmp.push_back(w[j][i]);
+        }
+
+        y.push_back(tmp);
+    }
+
+    return y;
+}
+
 void printVect(vector<float> x) {
     for (float i : x) {
         cout << i << " ";
