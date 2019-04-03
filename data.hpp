@@ -31,6 +31,10 @@ class DataIterator {
         void transformData();
         void standardScaler();
         void minMaxScaler();
+
+        vector<float> transformX(vector<float>);
+        vector<float> transformY(vector<float>);
+
         vector<float> inverseTransformX(vector<float>);
         vector<float> inverseTransformY(vector<float>);
 
