@@ -41,7 +41,7 @@ void Sequential::compile(float lr, string loss_fn) {
 void Sequential::fit(vector<vector<float>> x, vector<vector<float>> y, int epochs) {
     for (int e = 0; e < epochs; e++) {
         float loss = 0;
-        for(int i = 0; i < 1; i++) {
+        for(int i = 0; i < x.size(); i++) {
             this->run(x[i]);
             
             loss += this->getLoss(y[i]);
@@ -70,7 +70,7 @@ float Sequential::getLoss(vector<float> y) {
         loss /= y.size();
     } else if (this->loss_fn == "binary_cross_entropy") {
         for (int i = 0; i < y.size(); i++) {
-            loss -= y[i] * log(this->y_hat[i]) + (1 - y[i]) * log(1 - this->y_hat[i]);
+            loss -= y[i] * log(this->y_hat[i] + 0.00001) + (1 - y[i]) * log(1 - this->y_hat[i] - 0.00001);
         }
         loss /= y.size();        
     }

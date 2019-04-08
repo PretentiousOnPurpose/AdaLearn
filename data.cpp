@@ -33,6 +33,8 @@ void DataIterator::readData(string x_data_filename, string y_data_filename) {
         }
         x_file.close();
     }
+    
+    this->n_feat = this->rX[0].size();
 
     if (y_file.is_open()) {
         while (getline(y_file,line)) {

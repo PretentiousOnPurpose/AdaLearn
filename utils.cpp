@@ -27,6 +27,16 @@ vector<float> sub(vector<float> x, vector<float> y, float scale) {
     return z;
 }
 
+vector<float> add(vector<float> x, vector<float> y, float scale) {
+    vector<float> z;
+    
+    for (int i = 0; i < x.size(); i++) {
+            z.push_back(scale * (x[i] + y[i]));
+    }
+
+    return z;
+}
+
 vector<float> mul(vector<float> x, vector<float> y) {
     vector<float> z;
 
@@ -119,3 +129,35 @@ void printVect(vector<vector<float>> x) {
     }
 }
 
+vector<float> getMatDims(vector<vector<float>> x) {
+    vector<float> y;
+    y.push_back(x.size());
+    y.push_back(x[0].size());
+    
+    return y;
+}
+
+vector<vector<float>> ones_like(vector<vector<float>> x) {
+    vector<vector<float>> w;
+    vector<float> dims = getMatDims(x);
+
+    for (int i = 0; i < dims[0]; i++) {
+        vector<float> tmp;
+        for (int j = 0; j < dims[1]; j++) {
+            tmp.push_back(1);
+        }
+        w.push_back(tmp);
+    }
+
+    return w;
+}
+
+vector<float> ones_like(vector<float> x) {
+    vector<float> w;
+
+    for (int i = 0; i < x.size(); i++) {
+        w.push_back(1);
+    }
+
+    return w;
+}
