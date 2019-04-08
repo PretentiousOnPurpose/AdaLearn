@@ -38,8 +38,7 @@ class DataIterator {
         vector<float> inverseTransformX(vector<float>);
         vector<float> inverseTransformY(vector<float>);
 
-        DataIterator(int n_feat, string type) {
-            this->n_feat = n_feat;
+        DataIterator(string type) {
             this->type = type;
         }
 };

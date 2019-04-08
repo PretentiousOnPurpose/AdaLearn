@@ -70,7 +70,7 @@ void DataIterator::minMaxScaler() {
 
     // Calculating Max
     for (int i = 0; i < this->n_feat; i++) {
-        float max = this->rX[i][0];
+        float max = this->rX[0][i];
         for (int j = 0; j < this->rX.size(); j++) {
             if (max < this->rX[j][i]) {
                 max = this->rX[j][i];

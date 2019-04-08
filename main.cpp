@@ -8,33 +8,22 @@ using namespace std;
 
 int main() {
 
-    DataIterator d = DataIterator(30, "min_max_scaler");
-    d.readData("trainX.csv", "trainY.csv");
+    DataIterator d = DataIterator("min_max_scaler");
+    d.readData("data.csv", "y.csv");
     d.transformData();
 
-    vector<vector<float>> x = {{0, 0}, {0, 1}, {1, 0}, {1, 1}, {1, 3}, {3, -1}, {-1, 1},  {1, 2}, {2, 1}, {2, 2}, {2, 3}, {3, 2}};
-    vector<vector<float>> y = {{0}, {0}, {0}, {0}, {1}, {0}, {0}, {1}, {1}, {1}, {1}, {1}};
-
     Sequential model;
-    model.add(1, "relu", 2);
+    model.add(1, "relu", d.n_feat);
     model.add(5, "relu");
     model.add(3, "relu");
-    model.add(1, "sigmoid");
+    model.add(1, "relu");
 
-    model.compile(0.005, "binary_cross_entropy");
-    model.fit(x, y, 330);
+    model.compile(0.05, "mean_squared_error", 10);
+    model.fit(d.tX, d.tY, 10);
 
-    model.run(vector<float>{1,1});
-    printVect(model.y_hat);
-
-        model.run(vector<float>{0,1});
-    printVect(model.y_hat);
-
-        model.run(vector<float>{1,0});
-    printVect(model.y_hat);
-
-        model.run(vector<float>{5,5});
-    printVect(model.y_hat);
+    model.run(d.tX[92]);
+    printVect(d.inverseTransformY(model.y_hat));
+    printVect(d.rY[92]);
 
     return 0;
 }

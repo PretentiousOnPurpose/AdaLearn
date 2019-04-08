@@ -33,9 +33,10 @@ void Sequential::run(vector<float> x) {
     this->y_hat = this->layers.back().l_y_hat;
 }
 
-void Sequential::compile(float lr, string loss_fn) {
+void Sequential::compile(float lr, string loss_fn, int print_freq) {
     this->lr = lr;
     this->loss_fn = loss_fn;
+    this->print_freq = print_freq;
 }
 
 void Sequential::fit(vector<vector<float>> x, vector<vector<float>> y, int epochs) {
@@ -43,13 +44,21 @@ void Sequential::fit(vector<vector<float>> x, vector<vector<float>> y, int epoch
         float loss = 0;
         for(int i = 0; i < x.size(); i++) {
             this->run(x[i]);
-            
+            // cout << "X" << endl;
+            // printVect(x[i]);
+            // cout << "Y^" << endl;
+            // printVect(this->y_hat);
+            // cout << "Y" << endl;
+            // printVect(y[i]);
             loss += this->getLoss(y[i]);
             this->backProp(this->lr, this->loss_fn, y[i]);
         }
-
         loss /= x.size();
-        cout << "Epoch - " << e << " | Loss: " << loss << endl;
+
+        if (e % this->print_freq == 0) {
+            cout << "Epoch - " << e << " | Loss: " << loss << endl;
+        }
+
     }
 }
 
@@ -70,9 +79,11 @@ float Sequential::getLoss(vector<float> y) {
         loss /= y.size();
     } else if (this->loss_fn == "binary_cross_entropy") {
         for (int i = 0; i < y.size(); i++) {
-            loss -= y[i] * log(this->y_hat[i] + 0.00001) + (1 - y[i]) * log(1 - this->y_hat[i] - 0.00001);
+            loss -= (y[i] * log(this->y_hat[i]) + (1 - y[i]) * log(1 - this->y_hat[i]));
         }
+
         loss /= y.size();        
     }
+
     return loss;
 }

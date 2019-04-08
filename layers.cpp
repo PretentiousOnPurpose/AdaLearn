@@ -20,10 +20,10 @@ void Layer::initWeights(int input_dims) {
     for (int i = 0; i < this->units; i++) {
         vector<float> tmp;
         for (int i = 0; i < input_dims; i++) {
-            tmp.push_back(rand() / double(RAND_MAX));    
+            tmp.push_back(rand() / (double(RAND_MAX)));    
         }
         this->weights.push_back(tmp);
-        this->bias.push_back(rand() / double(RAND_MAX));
+        this->bias.push_back(rand() / (double(RAND_MAX)));
     }
 }
 
@@ -87,7 +87,7 @@ vector<float> Layer::lossFnGrad(vector<float> x, string loss_fn) {
         return sub(this->l_y_hat, x);
     } else if (loss_fn == "binary_cross_entropy") {
         for (int i = 0; i < x.size(); i++) {
-            y.push_back(this->l_y_hat[i] - x[i]);
+            y.push_back(-(this->l_y_hat[i] - x[i]));
         }
     }
 
@@ -115,6 +115,13 @@ void Layer::backProp_L(float lr, string loss_fn, vector<float> dErr_1, vector<ve
     }
 
     dW = gradMatMul(this->dErr, this->input);
+
+    // cout << "dW" << endl;
+    // printVect(dW);
+
+    // cout << "dB" << endl;
+    // printVect(this->dErr);
+
 
     for (int i = 0; i < this->weights.size(); i++) {
         for (int j = 0; j < this->weights[0].size(); j++) {
