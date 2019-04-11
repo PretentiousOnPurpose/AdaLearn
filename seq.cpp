@@ -55,9 +55,10 @@ void Sequential::fit(vector<vector<float>> x, vector<vector<float>> y, int epoch
             loss += this->getLoss(y[i]);
             this->backProp(this->lr, this->loss_fn, y[i]);
 
+            // cin.ignore();
+
             // cout << "\n\nHit Return or Enter for Main Screen\n\n";            
             // while (cin.get() != '\n') {}
-
         }
         loss /= x.size();
 

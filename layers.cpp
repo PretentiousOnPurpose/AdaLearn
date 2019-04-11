@@ -9,6 +9,13 @@
 using std::vector;
 using namespace std;
 
+random_device rd;
+mt19937 gen(rd());
+
+float r_norm(double mean, double sigma){
+    normal_distribution<double> d(mean, sigma);
+    return d(gen);
+}
 
 Layer::Layer(int units, string act_fn, int n) {
     this->units = units;
@@ -19,7 +26,8 @@ Layer::Layer(int units, string act_fn, int n) {
 void Layer::initWeights(int input_dims) {
     for (int i = 0; i < this->units; i++) {
         vector<float> tmp;
-        for (int i = 0; i < input_dims; i++) {
+        for (int j = 0; j < input_dims; j++) {
+            srand(time(0) % 10);
             tmp.push_back(rand() / (double(RAND_MAX)));    
         }
         this->weights.push_back(tmp);
@@ -109,12 +117,12 @@ void Layer::backProp_L(float lr, string loss_fn, vector<float> dErr_1, vector<ve
     vector<vector<float>> dW;
     
     if (this->type == "output" || (this->type == "input" && w.empty())) {
-        // cout << "LOSS GRAD" << endl;
-        // printVect();
         this->dErr = vectElementMul(lossFnGrad(dErr_1, loss_fn), actFnGrad(this->l_y_hat, 1));
     } else {
         this->dErr = vectElementMul(matMul(transpose(w), dErr_1), actFnGrad(this->l_y_hat));        
     }
+
+    // cout << "-------- Layer " << this->n << " -----------" << endl;
 
     // cout << "In" << endl;
     // printVect(this->input);
@@ -130,12 +138,14 @@ void Layer::backProp_L(float lr, string loss_fn, vector<float> dErr_1, vector<ve
 
     dW = gradMatMul(this->dErr, this->input);
 
-    // cout << "LR: " << lr << endl;
-
     for (int i = 0; i < this->weights.size(); i++) {
         for (int j = 0; j < this->weights[0].size(); j++) {
             this->weights[i][j] = this->weights[i][j] - lr * dW[i][j];
         }
+    }
+
+    for (int i = 0; i < this->units; i++) {
+        this->bias[i] -= lr * this->dErr[i];
     }
 
     // cout << "dW" << endl;
@@ -143,8 +153,10 @@ void Layer::backProp_L(float lr, string loss_fn, vector<float> dErr_1, vector<ve
 
     // cout << "W+" << endl;
     // printVect(this->weights);
-    
-    for (int i = 0; i < this->units; i++) {
-        this->bias[i] -= lr * this->dErr[i];
-    }
+
+    // cout << "b+" << endl;
+    // printVect(this->bias);
+
+    // cout << "-------- Layer " << this->n << " -----------" << endl;
+
 }
