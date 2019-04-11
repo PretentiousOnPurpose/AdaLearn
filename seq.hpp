@@ -20,4 +20,5 @@ class Sequential {
         void fit(vector<vector<float>>, vector<vector<float>>, int);
         float getLoss(vector<float>);
         void backProp(float, string, vector<float>);
+        void accuracy(vector<vector<float>> x, vector<vector<float>> y);
 };

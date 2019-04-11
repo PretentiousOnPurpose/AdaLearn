@@ -10,10 +10,10 @@ using std::vector;
 using namespace std;
 
 
-Layer::Layer(int units, string act_fn, string type) {
+Layer::Layer(int units, string act_fn, int n) {
     this->units = units;
     this->act_fn = act_fn;
-    this->type = type;
+    this->n = n;
 }
 
 void Layer::initWeights(int input_dims) {
@@ -31,7 +31,6 @@ void Layer::activation(vector<float> x) {
 
     this->input = x;
     vector<float> y = add(matMul(this->weights, x), this->bias);
-    // vector<float> y = matMul(this->weights, x);
 
     if (this->act_fn == "relu") {
         y = relu(y);
@@ -72,7 +71,7 @@ vector<float> Layer::actFnGrad(vector<float> x, int o) {
             if (!o) {
                 y.push_back(i * (1 - i));
             } else {
-                y.push_back(1);
+                y.push_back((i) * (1 - (i)));
             }
         }
     }
@@ -87,7 +86,7 @@ vector<float> Layer::lossFnGrad(vector<float> x, string loss_fn) {
         return sub(this->l_y_hat, x);
     } else if (loss_fn == "binary_cross_entropy") {
         for (int i = 0; i < x.size(); i++) {
-            y.push_back(-(this->l_y_hat[i] - x[i]));
+            y.push_back(-(this->l_y_hat[i] - x[i]) / ((this->l_y_hat[i]) * (1 - (this->l_y_hat[i]))));
         }
     }
 
@@ -104,31 +103,47 @@ vector<float> Layer::sigmoid(vector<float> x) {
 }
 
 void Layer::backProp_L(float lr, string loss_fn, vector<float> dErr_1, vector<vector<float>> w) {
+    
     float tmp = 0;
     vector<float> tmp1;
     vector<vector<float>> dW;
     
     if (this->type == "output" || (this->type == "input" && w.empty())) {
+        // cout << "LOSS GRAD" << endl;
+        // printVect();
         this->dErr = vectElementMul(lossFnGrad(dErr_1, loss_fn), actFnGrad(this->l_y_hat, 1));
     } else {
-        this->dErr = vectElementMul(matMul(transpose(w), dErr_1), actFnGrad(this->l_y_hat));
+        this->dErr = vectElementMul(matMul(transpose(w), dErr_1), actFnGrad(this->l_y_hat));        
     }
 
+    // cout << "In" << endl;
+    // printVect(this->input);
+
+    // cout << "W" << endl;
+    // printVect(this->weights);
+
+    // cout << "B" << endl;
+    // printVect(this->bias);
+
+    // cout << "db" << endl;
+    // printVect(this->dErr);
+
     dW = gradMatMul(this->dErr, this->input);
+
+    // cout << "LR: " << lr << endl;
+
+    for (int i = 0; i < this->weights.size(); i++) {
+        for (int j = 0; j < this->weights[0].size(); j++) {
+            this->weights[i][j] = this->weights[i][j] - lr * dW[i][j];
+        }
+    }
 
     // cout << "dW" << endl;
     // printVect(dW);
 
-    // cout << "dB" << endl;
-    // printVect(this->dErr);
-
-
-    for (int i = 0; i < this->weights.size(); i++) {
-        for (int j = 0; j < this->weights[0].size(); j++) {
-            this->weights[i][j] -= lr * dW[i][j];
-        }
-    }
-
+    // cout << "W+" << endl;
+    // printVect(this->weights);
+    
     for (int i = 0; i < this->units; i++) {
         this->bias[i] -= lr * this->dErr[i];
     }

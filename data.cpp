@@ -58,7 +58,7 @@ void DataIterator::minMaxScaler() {
     // For X_DATA
     // Calculating Min
     for (int i = 0; i < this->n_feat; i++) {
-        float min = 0;
+        float min = this->rX[0][i];
         for (int j = 0; j < this->rX.size(); j++) {
             if (min > this->rX[j][i]) {
                 min =  this->rX[j][i];
@@ -93,7 +93,7 @@ void DataIterator::minMaxScaler() {
 
     // For Y_DATA
     // Calculating Min
-    float min = 0;
+    float min = this->rY[0][0];
     for (int i = 0; i < this->rY.size(); i++) {
         if (min > this->rY[i][0]) {
             min = this->rY[i][0];
@@ -189,7 +189,7 @@ vector<float> DataIterator::transformX(vector<float> x) {
         }
     }
 
-    return x;
+    return y;
 }
 
 vector<float> DataIterator::transformY(vector<float> x) {
@@ -225,7 +225,7 @@ vector<float> DataIterator::inverseTransformY(vector<float> x) {
         if (this->type == "standard_scaler") {
             y.push_back(x[i] * this->stdY + this->meanY);
         } else if (this->type == "min_max_scaler") {
-            y.push_back(x[i] * (this->maxY - this->minY) + this->minY);
+            y.push_back((x[i] * (this->maxY - this->minY)) + this->minY);
         }
     }
 

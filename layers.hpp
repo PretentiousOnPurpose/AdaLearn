@@ -15,8 +15,9 @@ class Layer {
         vector<float> input;
         int units;
         string type;
+        int n;
 
-        Layer(int units, string act_fn, string type);
+        Layer(int units, string act_fn, int n);
         void activation(vector<float>);
         vector<float> relu(vector<float>);
         vector<float> sigmoid(vector<float>);

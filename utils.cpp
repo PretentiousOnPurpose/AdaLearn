@@ -115,7 +115,7 @@ vector<vector<float>> transpose(vector<vector<float>> w) {
 
 void printVect(vector<float> x) {
     for (float i : x) {
-        cout << i << " ";
+        cout << i << ",";
     }
     cout << endl;
 }
@@ -123,7 +123,7 @@ void printVect(vector<float> x) {
 void printVect(vector<vector<float>> x) {
     for (vector<float> i : x) {
         for (float j : i) {
-            cout << j << " ";
+            cout << j << ",";
         }
         cout << endl;
     }
@@ -160,4 +160,25 @@ vector<float> ones_like(vector<float> x) {
     }
 
     return w;
+}
+
+vector<float> scale(float s, vector<float> x) {
+    vector<float> y;
+    for (float i : x) {
+        y.push_back(s * i);
+    }
+
+    return y;
+}
+
+float gradSum(vector<vector<float>> w, vector<float> dErr) {
+    float sum = 0;
+    vector<float> tmp = matMul(transpose(w), dErr);
+
+    for (float i : tmp) {
+        sum += i;
+    }
+
+    return sum;
+
 }
