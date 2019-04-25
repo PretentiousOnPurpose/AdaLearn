@@ -3,19 +3,13 @@
 #include <string>
 #include <cmath>
 #include <random>
+#include <fstream>
 #include "layers.hpp"
 #include "utils.hpp"
+#include "data.hpp"
 
 using std::vector;
 using namespace std;
-
-random_device rd;
-mt19937 gen(rd());
-
-float r_norm(double mean, double sigma){
-    normal_distribution<double> d(mean, sigma);
-    return d(gen);
-}
 
 Layer::Layer(int units, string act_fn, int n) {
     this->units = units;
@@ -23,16 +17,30 @@ Layer::Layer(int units, string act_fn, int n) {
     this->n = n;
 }
 
-void Layer::initWeights(int input_dims) {
-    for (int i = 0; i < this->units; i++) {
-        vector<float> tmp;
-        for (int j = 0; j < input_dims; j++) {
-            srand(time(0) % 10);
-            tmp.push_back(rand() / (double(RAND_MAX)));    
+void Layer::readWeights(int x, int y, int wb) {
+    string cmd = "python3 rand_gen.py " + to_string(x) + " " + to_string(y) + " > rand_gen.txt";
+    system(cmd.c_str());
+
+    ifstream x_file ("rand_gen.txt");
+
+    string line;
+
+    if (x_file.is_open()) {
+        while (getline(x_file,line)) {
+            if (wb) {
+                this->weights.push_back(DataIterator::strSplit(const_cast<char*>(line.c_str()), ","));
+            } else {
+                this->bias = DataIterator::strSplit(const_cast<char*>(line.c_str()), ",");
+            }
         }
-        this->weights.push_back(tmp);
-        this->bias.push_back(rand() / (double(RAND_MAX)));
+        x_file.close();
     }
+
+}
+
+void Layer::initWeights(int input_dims) {    
+    readWeights(this->units, input_dims, 1);
+    readWeights(this->units, 1, 0);
 }
 
 void Layer::activation(vector<float> x) {
@@ -117,7 +125,7 @@ void Layer::backProp_L(float lr, string loss_fn, vector<float> dErr_1, vector<ve
     vector<vector<float>> dW;
     
     if (this->type == "output" || (this->type == "input" && w.empty())) {
-        this->dErr = vectElementMul(lossFnGrad(dErr_1, loss_fn), actFnGrad(this->l_y_hat, 1));
+        this->dErr = vectElementMul(lossFnGrad(dErr_1, loss_fn), actFnGrad(this->l_y_hat));
     } else {
         this->dErr = vectElementMul(matMul(transpose(w), dErr_1), actFnGrad(this->l_y_hat));        
     }
