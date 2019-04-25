@@ -17,8 +17,8 @@ class Sequential {
         void add(int units, string act_fn, int input_dims = 0);
         void run(vector<float>);
         void compile(float, string, int = 1);
-        void fit(vector<vector<float>>, vector<vector<float>>, int);
+        void fit(vector<vector<float>>, vector<vector<float>>, int, int);
         float getLoss(vector<float>);
         void backProp(float, string, vector<float>);
-        void accuracy(vector<vector<float>> x, vector<vector<float>> y);
+        void globBackProp(int batch);
 };

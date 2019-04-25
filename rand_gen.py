@@ -5,7 +5,7 @@ import time
 # y = np.random.normal(0, 1.5, (int(sys.argv[1]), int(sys.argv[2])))
 
 np.random.seed(int(time.time()))	
-y = np.random.normal(0, 0.5, (int(sys.argv[1]), int(sys.argv[2])))
+y = np.random.normal(0, 0.25, (int(sys.argv[1]), int(sys.argv[2]))) / 5
 
 end1 = ""
 end2 = ""

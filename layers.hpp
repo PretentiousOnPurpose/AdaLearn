@@ -10,7 +10,9 @@ class Layer {
         string act_fn;
         vector<float> dErr;
         vector<vector<float>> weights;
+        vector<vector<float>> dW;
         vector<float> bias;
+        vector<float> dB;
         vector<float> l_y_hat;
         vector<float> input;
         int units;

@@ -41,6 +41,8 @@ void Layer::readWeights(int x, int y, int wb) {
 void Layer::initWeights(int input_dims) {    
     readWeights(this->units, input_dims, 1);
     readWeights(this->units, 1, 0);
+    this->dW = zeros(this->units, input_dims);
+    this->dB = zeros(this->units);
 }
 
 void Layer::activation(vector<float> x) {
@@ -130,41 +132,16 @@ void Layer::backProp_L(float lr, string loss_fn, vector<float> dErr_1, vector<ve
         this->dErr = vectElementMul(matMul(transpose(w), dErr_1), actFnGrad(this->l_y_hat));        
     }
 
-    // cout << "-------- Layer " << this->n << " -----------" << endl;
-
-    // cout << "In" << endl;
-    // printVect(this->input);
-
-    // cout << "W" << endl;
-    // printVect(this->weights);
-
-    // cout << "B" << endl;
-    // printVect(this->bias);
-
-    // cout << "db" << endl;
-    // printVect(this->dErr);
-
     dW = gradMatMul(this->dErr, this->input);
 
     for (int i = 0; i < this->weights.size(); i++) {
         for (int j = 0; j < this->weights[0].size(); j++) {
-            this->weights[i][j] = this->weights[i][j] - lr * dW[i][j];
+            this->dW[i][j] += dW[i][j];
         }
     }
 
     for (int i = 0; i < this->units; i++) {
-        this->bias[i] -= lr * this->dErr[i];
+        this->dB[i] += this->dErr[i];
     }
-
-    // cout << "dW" << endl;
-    // printVect(dW);
-
-    // cout << "W+" << endl;
-    // printVect(this->weights);
-
-    // cout << "b+" << endl;
-    // printVect(this->bias);
-
-    // cout << "-------- Layer " << this->n << " -----------" << endl;
 
 }
