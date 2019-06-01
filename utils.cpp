@@ -129,8 +129,8 @@ void printVect(vector<vector<float>> x) {
     }
 }
 
-vector<int> getMatDims(vector<vector<float>> x) {
-    vector<int> y;
+vector<float> getMatDims(vector<vector<float>> x) {
+    vector<float> y;
     y.push_back(x.size());
     y.push_back(x[0].size());
     
@@ -139,7 +139,7 @@ vector<int> getMatDims(vector<vector<float>> x) {
 
 vector<vector<float>> ones_like(vector<vector<float>> x) {
     vector<vector<float>> w;
-    vector<int> dims = getMatDims(x);
+    vector<float> dims = getMatDims(x);
 
     for (int i = 0; i < dims[0]; i++) {
         vector<float> tmp;
@@ -181,29 +181,4 @@ float gradSum(vector<vector<float>> w, vector<float> dErr) {
 
     return sum;
 
-}
-
-vector<vector<float>> zeros(int x, int y) {
-    vector<vector<float>> z;
-    vector<float> tmp;
-
-    for (int i = 0; i < y; i++) {
-        tmp.push_back(0);
-    }
-
-    for (int i = 0; i < x; i++) {
-        z.push_back(tmp);
-    }
-
-    return z;
-}
-
-vector<float> zeros(int x) {
-    vector<float> y;
-
-    for (int i = 0; i < x; i++) {
-        y.push_back(0);
-    }
-
-    return y;
 }

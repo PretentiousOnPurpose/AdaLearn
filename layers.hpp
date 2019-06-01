@@ -10,9 +10,7 @@ class Layer {
         string act_fn;
         vector<float> dErr;
         vector<vector<float>> weights;
-        vector<vector<float>> dW;
         vector<float> bias;
-        vector<float> dB;
         vector<float> l_y_hat;
         vector<float> input;
         int units;
@@ -24,7 +22,6 @@ class Layer {
         vector<float> relu(vector<float>);
         vector<float> sigmoid(vector<float>);
         void initWeights(int input_dims);
-        void readWeights(int, int, int);
         vector<float> actFnGrad(vector<float>, int = 0);
         vector<float> lossFnGrad(vector<float>, string);
         void backProp_L(float, string, vector<float>, vector<vector<float>>);

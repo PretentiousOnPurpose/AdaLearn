@@ -40,18 +40,25 @@ void Sequential::compile(float lr, string loss_fn, int print_freq) {
     this->layers[0].type = "input";
 }
 
-void Sequential::fit(vector<vector<float>> x, vector<vector<float>> y, int epochs, int batch) {
+void Sequential::fit(vector<vector<float>> x, vector<vector<float>> y, int epochs) {
     for (int e = 0; e < epochs; e++) {
         float loss = 0;
         for(int i = 0; i < x.size(); i++) {
             this->run(x[i]);
+
+            // cout << "Y" << endl;
+            // printVect(y[i]);
+
+            // cout << "Y_HAT" << endl;
+            // printVect(this->y_hat);
             
             loss += this->getLoss(y[i]);
             this->backProp(this->lr, this->loss_fn, y[i]);
 
-            if (i % batch == 0) {
-                this->globBackProp(batch);
-            }
+            // cin.ignore();
+
+            // cout << "\n\nHit Return or Enter for Main Screen\n\n";            
+            // while (cin.get() != '\n') {}
         }
         loss /= x.size();
 
@@ -88,19 +95,14 @@ float Sequential::getLoss(vector<float> y) {
     return loss;
 }
 
-void Sequential::globBackProp(int batch) {
-    vector<int> tmp;
-    for (int i = 0; i < this->layers.size(); i++) {
-        tmp = getMatDims(this->layers[i].weights);
-        for (int j = 0; j < tmp[0]; j++) {
-            for (int k = 0; k < tmp[1]; k++) {
-                this->layers[i].weights[j][k] -= this->lr * (this->layers[i].dW[j][k] / batch);
-            }
+void Sequential::accuracy(vector<vector<float>> x, vector<vector<float>> y) {
+    float acc = 0;
+    for (int i = 0; i < x.size(); i++) {
+        this->run(x[i]);
+        if ((this->y_hat[0] > 0.5 && y[i][0] == 1) || (this->y_hat[0] <= 0.5 && y[i][0] == 0)) {
+            acc++;
         }
-
-        for (int j = 0; j < this->layers[i].units; j++) {
-            this->layers[i].bias[j] -= this->lr * (this->layers[i].dB[j] / batch);
-        }
-
     }
+
+    cout << "Acc: " << acc / x.size() << endl;
 }

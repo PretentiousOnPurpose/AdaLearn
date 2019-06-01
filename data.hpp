@@ -25,7 +25,7 @@ class DataIterator {
         vector<vector<float>> tX;
         vector<vector<float>> tY;
 
-        static vector<float> strSplit(char * , string);
+        vector<float> strSplit(char * , string);
 
         void readData(string, string);
         void transformData();

@@ -16,14 +16,15 @@ int main() {
 
     Sequential model;
     model.add(1, "relu", d.n_feat);
-    model.add(2, "relu");
-    model.add(3, "relu");
-    model.add(1, "relu");
+    // model.add(2, "relu");
+    // model.add(3, "relu");
+    // model.add(1, "relu");
 
-    model.compile(0.005, "mean_squared_error", 10);
-    model.fit(d.tX, d.tY, 500, 50);
+    model.compile(1, "mean_squared_error", 1);
+    model.fit(d.tX, d.tY, 10);
 
-    // model.run(d.transformX(vector<float>{10}));
+    model.run(d.transformX(vector<float>{10}));
+    printVect(d.inverseTransformY(model.y_hat));
 
     // model.accuracy(d.tX, d.rY);
 
