@@ -70,10 +70,7 @@ void Sequential::fit(vector<vector<float>> x, vector<vector<float>> y, int epoch
 }
 
 void Sequential::backProp(float lr, string loss_fn, vector<float> y) {
-    this->layers.back().backProp_L(lr, loss_fn, y, vector<vector<float>>{});
-    for (int i = this->layers.size() - 2; i >= 0; i--) {
-        this->layers[i].backProp_L(lr, loss_fn, this->layers[i+1].dErr, this->layers[i+1].weights);
-    }
+
 }
 
 float Sequential::getLoss(vector<float> y) {

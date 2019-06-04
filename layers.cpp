@@ -27,8 +27,8 @@ void Layer::initWeights(int input_dims) {
     for (int i = 0; i < this->units; i++) {
         vector<float> tmp;
         for (int j = 0; j < input_dims; j++) {
-            srand(time(0) % 10);
-            tmp.push_back(rand() / (double(RAND_MAX)));    
+            srand((time(0) + rand()) % 100);
+            tmp.push_back(rand() / (double(RAND_MAX) * 10));    
         }
         this->weights.push_back(tmp);
         this->bias.push_back(rand() / (double(RAND_MAX)));

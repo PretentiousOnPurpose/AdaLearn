@@ -11,7 +11,7 @@ int main() {
 
 
     DataIterator d = DataIterator("min_max_scaler");
-    d.readData("linX.csv", "linY.csv");
+    d.readData("dataX.csv", "dataY.csv");
     d.transformData();
 
     Sequential model;
@@ -20,12 +20,14 @@ int main() {
     // model.add(3, "relu");
     // model.add(1, "relu");
 
-    model.compile(1, "mean_squared_error", 1);
-    model.fit(d.tX, d.tY, 10);
+    model.compile(0.5, "mean_squared_error", 25);
+    model.fit(d.tX, d.tY, 100);
 
-    model.run(d.transformX(vector<float>{10}));
+    model.run(d.transformX(vector<float>{0.78, 0.45, 0.21}));
     printVect(d.inverseTransformY(model.y_hat));
 
+
+    printVect(model.layers[0].weights);
     // model.accuracy(d.tX, d.rY);
 
     return 0;
