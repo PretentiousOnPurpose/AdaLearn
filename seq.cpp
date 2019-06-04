@@ -45,20 +45,8 @@ void Sequential::fit(vector<vector<float>> x, vector<vector<float>> y, int epoch
         float loss = 0;
         for(int i = 0; i < x.size(); i++) {
             this->run(x[i]);
-
-            // cout << "Y" << endl;
-            // printVect(y[i]);
-
-            // cout << "Y_HAT" << endl;
-            // printVect(this->y_hat);
-            
             loss += this->getLoss(y[i]);
             this->backProp(this->lr, this->loss_fn, y[i]);
-
-            // cin.ignore();
-
-            // cout << "\n\nHit Return or Enter for Main Screen\n\n";            
-            // while (cin.get() != '\n') {}
         }
         loss /= x.size();
 
@@ -70,7 +58,10 @@ void Sequential::fit(vector<vector<float>> x, vector<vector<float>> y, int epoch
 }
 
 void Sequential::backProp(float lr, string loss_fn, vector<float> y) {
-
+    this->layers.back().backProp_L(lr, loss_fn, y, vector<vector<float>>{});
+    for (int i = this->layers.size() - 2; i >= 0; i--) {
+        this->layers[i].backProp_L(lr, loss_fn, this->layers[i+1].dErr, this->layers[i+1].weights);
+    }
 }
 
 float Sequential::getLoss(vector<float> y) {

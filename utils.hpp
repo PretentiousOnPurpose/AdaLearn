@@ -17,4 +17,4 @@ vector<vector<float>> ones_like(vector<vector<float>>);
 vector<float> ones_like(vector<float>);
 vector<float> getMatDims(vector<vector<float>>);
 vector<float> scale(float, vector<float>);
-float gradSum(vector<vector<float>>, vector<float>);
+vector<float> gradSum(vector<vector<float>>, vector<float>);

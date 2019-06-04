@@ -16,19 +16,16 @@ int main() {
 
     Sequential model;
     model.add(1, "relu", d.n_feat);
-    // model.add(2, "relu");
-    // model.add(3, "relu");
+    model.add(1, "relu");
+    model.add(5, "relu");
     // model.add(1, "relu");
+    model.add(1, "relu");
 
-    model.compile(0.5, "mean_squared_error", 25);
-    model.fit(d.tX, d.tY, 100);
+    model.compile(0.075, "mean_squared_error", 25);
+    model.fit(d.tX, d.tY, 500);
 
-    model.run(d.transformX(vector<float>{0.78, 0.45, 0.21}));
+    model.run(d.transformX(vector<float>{340, 7}));
     printVect(d.inverseTransformY(model.y_hat));
-
-
-    printVect(model.layers[0].weights);
-    // model.accuracy(d.tX, d.rY);
 
     return 0;
 }

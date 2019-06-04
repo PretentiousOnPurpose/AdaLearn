@@ -171,14 +171,18 @@ vector<float> scale(float s, vector<float> x) {
     return y;
 }
 
-float gradSum(vector<vector<float>> w, vector<float> dErr) {
-    float sum = 0;
-    vector<float> tmp = matMul(transpose(w), dErr);
+vector<float> gradSum(vector<vector<float>> w, vector<float> dErr) {
+    vector<float> y;
+    float tmp = 0;
 
-    for (float i : tmp) {
-        sum += i;
+    for (int i = 0; i < w[0].size(); i++) {
+        tmp = 0;
+        for (int j = 0; j < w.size(); j++) {
+            tmp += w[j][i] * dErr[i];
+        }
+        y.push_back(tmp);
     }
 
-    return sum;
+    return y;
 
 }
