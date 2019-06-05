@@ -1,9 +1,9 @@
 import numpy as np
 
-x1 = np.linspace(100, 750, 500)
-# x2 = np.linspace(2, 10, 500)
+x1 = np.linspace(0.1, 0.75, 20000)
+x2 = np.linspace(0.35, 0.55, 20000)
 
-y = 2 * x1 + 3
+y = 0.25 * x1 + 0.9 * x2 
 
 X = 1
 
