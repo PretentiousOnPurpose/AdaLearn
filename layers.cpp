@@ -120,15 +120,6 @@ void Layer::backProp_L(float lr, string loss_fn, vector<float> dErr_1, vector<ve
     if (this->type == "output" || (this->type == "input" && w.empty())) {
         this->dErr = vectElementMul(lossFnGrad(dErr_1, loss_fn), actFnGrad(this->l_y_hat, 1));
     } else {
-        printVect(dErr_1);
-        printVect(w);
-        printVect(gradSum(w, dErr_1));
-        // exit(0);
-
-        while (cin.get() != '\n') {
-            
-        }
-
         this->dErr = vectElementMul(gradSum(w, dErr_1), actFnGrad(this->l_y_hat));
     }
 

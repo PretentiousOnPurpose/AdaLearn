@@ -198,7 +198,7 @@ vector<float> gradSum(vector<vector<float>> w, vector<float> dErr) {
     for (int i = 0; i < w[0].size(); i++) {
         tmp = 0;
         for (int j = 0; j < w.size(); j++) {
-            tmp += w[j][i] * dErr[i];
+            tmp += w[j][i] * dErr[j];
         }
         y.push_back(tmp);
     }
