@@ -5,7 +5,7 @@
 #include <random>
 #include "layers.hpp"
 #include "utils.hpp"
-#include <stdlib.h> 
+#include <stdlib.h>
 
 using std::vector;
 using namespace std;
@@ -112,15 +112,24 @@ vector<float> Layer::sigmoid(vector<float> x) {
 }
 
 void Layer::backProp_L(float lr, string loss_fn, vector<float> dErr_1, vector<vector<float>> w) {
-    
+
     float tmp = 0;
     vector<float> tmp1;
     vector<vector<float>> dW;
-    
+
     if (this->type == "output" || (this->type == "input" && w.empty())) {
         this->dErr = vectElementMul(lossFnGrad(dErr_1, loss_fn), actFnGrad(this->l_y_hat, 1));
     } else {
-        this->dErr = vectElementMul(gradSum(w, dErr_1), actFnGrad(this->l_y_hat));        
+        printVect(dErr_1);
+        printVect(w);
+        printVect(gradSum(w, dErr_1));
+        // exit(0);
+
+        while (cin.get() != '\n') {
+            
+        }
+
+        this->dErr = vectElementMul(gradSum(w, dErr_1), actFnGrad(this->l_y_hat));
     }
 
     dW = gradMatMul(this->dErr, this->input);

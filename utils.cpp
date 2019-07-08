@@ -19,7 +19,7 @@ vector<float> squareDiff(vector<float> x, vector<float> y) {
 
 vector<float> sub(vector<float> x, vector<float> y, float scale) {
     vector<float> z;
-    
+
     for (int i = 0; i < x.size(); i++) {
             z.push_back(scale * (x[i] - y[i]));
     }
@@ -27,9 +27,29 @@ vector<float> sub(vector<float> x, vector<float> y, float scale) {
     return z;
 }
 
+float sum(vector<vector<float>> x) {
+    float y = 0;
+    for (int i = 0; i < x.size(); i++) {
+        for (int j = 0; j < x[0].size(); j++) {
+            y += x[i][j];
+        }
+    }
+
+    return y;
+}
+
+float sum(vector<float> x) {
+    float y = 0;
+    for (int i = 0; i < x.size(); i++) {
+      y += x[i];
+    }
+
+    return y;
+}
+
 vector<float> add(vector<float> x, vector<float> y, float scale) {
     vector<float> z;
-    
+
     for (int i = 0; i < x.size(); i++) {
             z.push_back(scale * (x[i] + y[i]));
     }
@@ -133,7 +153,7 @@ vector<float> getMatDims(vector<vector<float>> x) {
     vector<float> y;
     y.push_back(x.size());
     y.push_back(x[0].size());
-    
+
     return y;
 }
 

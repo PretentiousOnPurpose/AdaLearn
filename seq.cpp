@@ -38,12 +38,13 @@ void Sequential::compile(float lr, string loss_fn, int print_freq) {
     this->loss_fn = loss_fn;
     this->print_freq = print_freq;
     this->layers[0].type = "input";
+    // cout << "Weight Sum: " << sum(this->layers[0].weights) << endl;
 }
 
 void Sequential::fit(vector<vector<float>> x, vector<vector<float>> y, int epochs) {
     for (int e = 0; e < epochs; e++) {
         float loss = 0;
-        for(int i = 0; i < x.size(); i++) {
+        for(int i = 1; i < x.size(); i++) {
             this->run(x[i]);
             loss += this->getLoss(y[i]);
             this->backProp(this->lr, this->loss_fn, y[i]);
@@ -52,6 +53,7 @@ void Sequential::fit(vector<vector<float>> x, vector<vector<float>> y, int epoch
 
         if (e % this->print_freq == 0) {
             cout << "Epoch - " << e << " | Loss: " << loss << endl;
+            // cout << "Weight Sum: " << sum(this->layers[0].weights) << endl;
         }
 
     }
@@ -77,7 +79,7 @@ float Sequential::getLoss(vector<float> y) {
             loss -= (y[i] * log(0.001 + this->y_hat[i]) + (1 - y[i]) * log(0.001 + 1 - this->y_hat[i]));
         }
 
-        loss /= y.size();        
+        loss /= y.size();
     }
 
     return loss;
